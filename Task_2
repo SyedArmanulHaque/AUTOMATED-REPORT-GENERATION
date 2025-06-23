@@ -1,0 +1,64 @@
+import csv
+from fpdf import FPDF
+
+
+filename = 'cricketers1.csv'
+cricketers1 = []
+
+with open(filename, newline='') as csvfile:
+    reader = csv.DictReader(csvfile)
+    for row in reader:
+        cricketers1.append({
+            'Name': row['Name'],
+            'Team': row['Team'],
+            'Runs': int(row['Runs']),
+            'Wickets': int(row['Wickets'])
+        })
+
+#  Analyze the data
+total_players = len(cricketers1)
+total_runs = sum(player['Runs'] for player in cricketers1)
+average_runs = total_runs / total_players
+top_scorer = max(cricketers1, key=lambda x: x['Runs'])
+
+#  Generating PDF using FPDF
+class PDF(FPDF):
+    def header(self):
+        self.set_font('Arial', 'B', 14)
+        self.cell(0, 10, 'Cricketer Performance Report', ln=True, align='C')
+
+    def footer(self):
+        self.set_y(-15)
+        self.set_font('Arial', 'I', 10)
+        self.cell(0, 10, f'Page {self.page_no()}', align='C')
+
+# Create PDF
+pdf = PDF()
+pdf.add_page()
+pdf.set_font('Arial', '', 12)
+
+
+pdf.cell(0, 10, f'Total Players: {total_players}', ln=True)
+pdf.cell(0, 10, f'Average Runs: {average_runs:.2f}', ln=True)
+pdf.cell(0, 10, f'Top Scorer: {top_scorer["Name"]} ({top_scorer["Runs"]} runs)', ln=True)
+
+# Table Header
+pdf.ln(10)
+pdf.set_font('Arial', 'B', 12)
+pdf.cell(50, 10, 'Name', border=1)
+pdf.cell(40, 10, 'Team', border=1)
+pdf.cell(30, 10, 'Runs', border=1)
+pdf.cell(30, 10, 'Wickets', border=1)
+pdf.ln()
+
+# Table Rows
+pdf.set_font('Arial', '', 12)
+for player in cricketers1:
+    pdf.cell(50, 10, player['Name'], border=1)
+    pdf.cell(40, 10, player['Team'], border=1)
+    pdf.cell(30, 10, str(player['Runs']), border=1)
+    pdf.cell(30, 10, str(player['Wickets']), border=1)
+    pdf.ln()
+
+# Save PDF
+pdf.output('cricketer_report.pdf')
