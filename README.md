@@ -24,4 +24,5 @@ This is the average number of runs scored by the players listed. It shows a high
 Top Scorer: Virat Kohli (12000 runs)
 Among the players listed, Virat Kohli from India has scored the highest number of runs, making him the standout performer in terms of batting.****
 
-
+*Output:
+![Image](https://github.com/user-attachments/assets/3472e37f-6d2f-4eb8-b369-9fedb6099e1d)
