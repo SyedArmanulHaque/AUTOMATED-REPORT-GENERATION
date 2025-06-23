@@ -62,3 +62,4 @@ for player in cricketers1:
 
 # Save PDF
 pdf.output('cricketer_report.pdf')
+print("PDF generated successfully: cricketer_report.pdf")
